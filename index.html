@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Secret Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#fde8ef;--bg2:#e8e4fb;--card:rgba(255,255,255,.8);--ink:#4a3b52;--soft:#8b7a93;--accent:#d98aa9;--accent2:#b9a6e8;--line:#f0d9e4;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#2c2030;--bg2:#222139;--card:rgba(52,42,62,.82);--ink:#f6e9f0;--soft:#bfaec9;--accent:#eba3bf;--line:#4a3b58}}
+:root[data-theme="dark"]{--bg1:#2c2030;--bg2:#222139;--card:rgba(52,42,62,.82);--ink:#f6e9f0;--soft:#bfaec9;--accent:#eba3bf;--line:#4a3b58}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:'Quicksand',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,var(--bg1),var(--bg2));overflow:hidden;position:relative}
+.bl{position:fixed;bottom:-120px;width:46px;height:58px;border-radius:50% 50% 48% 48%;opacity:.7;animation:rise linear infinite;pointer-events:none}
+.bl:after{content:"";position:absolute;left:50%;top:100%;width:1px;height:46px;background:var(--soft);opacity:.5}
+@keyframes rise{to{transform:translateY(-120vh) translateX(24px)}}
+.screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;transition:opacity .8s,transform .8s}
+.hidden{opacity:0;transform:translateY(20px) scale(.97);pointer-events:none;visibility:hidden}
+.card{width:100%;max-width:420px;margin:auto;background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:28px;padding:32px 26px;text-align:center;box-shadow:0 24px 60px rgba(150,110,160,.22);transition:transform .15s}
+.eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--soft);margin:0 0 12px}
+h1,h2{font-family:'Playfair Display',Georgia,serif;font-weight:600;margin:0;line-height:1.2}
+h1{font-size:30px}h2{font-size:28px}
+.shine{background:linear-gradient(90deg,var(--accent),var(--accent2),#f3c98b,var(--accent));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 5s linear infinite;font-size:36px}
+@keyframes sh{to{background-position:300% 0}}
+.sub{color:var(--soft);margin:10px 0 20px;font-size:15px;line-height:1.6}
+input{width:100%;padding:15px 18px;font:inherit;font-size:16px;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:16px;text-align:center;outline:none}
+input:focus{border-color:var(--accent)}input::placeholder{color:var(--soft)}
+button{font:inherit;cursor:pointer;border:0}
+.btn{margin-top:14px;width:100%;padding:15px;font-weight:600;font-size:16px;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:16px;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.sealed{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.err{min-height:18px;margin:8px 0 0;font-size:13px;color:var(--accent)}
+.env{position:relative;width:200px;height:132px;margin:4px auto 20px;perspective:600px}
+.env .body{position:absolute;inset:0;background:linear-gradient(135deg,#f9c9da,#dcd3f8);border-radius:10px;box-shadow:0 10px 24px rgba(150,110,160,.3)}
+.env .flap{position:absolute;left:0;top:0;width:100%;height:68px;background:linear-gradient(160deg,#f4b6cc,#cfc3f5);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .8s;z-index:3;border-radius:10px 10px 0 0}
+.env .letter{position:absolute;left:14px;right:14px;top:10px;height:100px;background:#fff;border-radius:6px;transition:transform .8s .5s;z-index:1;display:flex;align-items:center;justify-content:center;font-size:30px}
+.env .seal{position:absolute;left:50%;top:50px;width:34px;height:34px;margin:-2px 0 0 -17px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f7a8c4,#c4637f);z-index:4;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;transition:opacity .3s}
+.env.open .flap{transform:rotateX(180deg);z-index:0}.env.open .letter{transform:translateY(-52px)}.env.open .seal{opacity:0}
+.row{display:flex;align-items:center;gap:14px;text-align:left;padding:10px 0}
+.row .ic{width:42px;height:42px;flex:none;border-radius:14px;background:linear-gradient(135deg,#fbd5e2,#dcd3f8);display:flex;align-items:center;justify-content:center;font-size:19px}
+.row small{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}.row b{font-size:17px;font-weight:600}
+.divider{height:1px;background:var(--line);margin:18px 0}
+.count{display:flex;justify-content:center;gap:8px}
+.count div{min-width:62px;padding:9px 6px;border:1px solid var(--line);border-radius:14px}
+.count b{display:block;font-size:22px;font-family:'Playfair Display',Georgia,serif}
+.count span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.note{font-size:14px;color:var(--soft);line-height:1.6;margin:0}
+.rev{opacity:0;transform:translateY(14px)}.show .rev{animation:in .7s forwards}
+@keyframes in{to{opacity:1;transform:none}}
+.ticket{position:relative;border:2px dashed var(--accent);border-radius:22px;padding:22px 18px;margin-top:6px}
+.stamp{display:inline-block;margin:6px 0 4px;padding:6px 16px;border:2px solid var(--accent);color:var(--accent);border-radius:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;font-size:13px;transform:rotate(-4deg)}
+.code{font-family:ui-monospace,monospace;letter-spacing:.2em;font-size:18px;font-weight:600}
+.tiny{font-size:12px;color:var(--soft)}
+#music{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;z-index:20;width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);font-size:18px;color:var(--ink);backdrop-filter:blur(8px)}
+.dot{position:fixed;top:-20px;width:10px;height:14px;border-radius:3px;pointer-events:none;animation:fall linear forwards;z-index:30}
+@keyframes fall{to{transform:translateY(105vh) rotate(600deg)}}
+@media (prefers-reduced-motion:reduce){.bl,.dot,.shine{animation:none}}
+</style>
+</head>
+<body>
+<button id="music" aria-label="Toggle music" style="display:none">🎵</button>
+
+<section class="screen" id="s1">
+  <div class="card">
+    <p class="eyebrow">A secret invitation</p>
+    <div class="env" id="env"><div class="body"></div><div class="letter">💌</div><div class="flap"></div><div class="seal">♥</div></div>
+    <h1>A surprise is waiting,<br>from all of us</h1>
+    <p class="sub">We have a secret to share with you. Please enter your name to open your invitation.</p>
+    <input id="name" type="text" maxlength="30" placeholder="Your name" autocomplete="given-name">
+    <p class="err" id="err"></p>
+    <button class="btn" id="open">Open invitation</button>
+  </div>
+</section>
+
+<section class="screen hidden" id="s2">
+  <div class="card" id="tilt">
+    <p class="eyebrow rev" style="animation-delay:.1s">Shh… it's a surprise</p>
+    <h2 class="rev" style="animation-delay:.3s">Dear <span id="guest" class="shine" style="font-size:inherit"></span>,</h2>
+    <p class="sub rev" style="animation-delay:.6s">You are warmly invited to a surprise birthday celebration for</p>
+    <h1 class="shine rev" style="animation-delay:.9s">Noor Ul Huda</h1>
+    <div class="divider"></div>
+    <div class="rev" style="animation-delay:1.2s">
+      <div class="row"><div class="ic">📅</div><div><small>Date</small><b>9 October 2026</b></div></div>
+      <div class="row"><div class="ic">🕥</div><div><small>Time</small><b>10:40 AM</b></div></div>
+      <div class="row"><div class="ic">📍</div><div><small>Place</small><b>CS Dining Area</b></div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="rev" style="animation-delay:1.5s">
+      <p class="eyebrow" id="clabel">Counting down</p><div class="count" id="count"></div>
+      <div class="divider"></div>
+      <p class="note">Noor knows nothing, so this stays between us. Seal the secret, then let us know if you can come.</p>
+      <button class="btn alt" id="pledge">🤫 I promise to keep the secret</button>
+      <button class="btn" id="yes" disabled>Yes, I'll be there 🎉</button>
+      <button class="btn alt" id="no" disabled>Sorry, I can't make it</button>
+    </div>
+  </div>
+</section>
+
+<section class="screen hidden" id="s3">
+  <div class="card">
+    <p class="eyebrow">RSVP</p>
+    <h2 id="tt">Thank you!</h2>
+    <p class="sub" id="ts"></p>
+    <div class="ticket">
+      <p class="tiny" style="margin:0">SURPRISE BIRTHDAY · TOP SECRET</p>
+      <h1 style="font-size:24px;margin:6px 0">Noor Ul Huda</h1>
+      <p class="tiny" style="margin:0 0 10px">9 October 2026 · 10:40 AM · CS Dining Area</p>
+      <div class="divider" style="margin:10px 0"></div>
+      <p class="tiny" style="margin:0">GUEST</p>
+      <b id="tg" style="font-size:20px"></b><br>
+      <span class="stamp" id="tst"></span>
+      <p class="tiny" id="tsec" style="margin:4px 0 0"></p>
+      <p class="tiny" style="margin:6px 0 2px">Confirmed on <span id="tdt"></span></p>
+      <div class="code" id="tcode"></div>
+    </div>
+    <p class="note" style="margin-top:18px">📸 Please take a screenshot of this card and send it to <b>Eman</b> so she knows your reply.</p>
+  </div>
+</section>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+var target=new Date(2026,9,9,10,40,0),guest='',timer=null;
+/* balloons */
+['#f9c9da','#cfc3f5','#c7ecdd','#fde7b0','#f4b6cc'].forEach(function(c,i){
+  for(var k=0;k<2;k++){var b=document.createElement('div');b.className='bl';b.style.background=c;b.style.left=(i*20+k*9+2)+'vw';b.style.animationDuration=(14+Math.random()*8)+'s';b.style.animationDelay=(-Math.random()*14)+'s';document.body.appendChild(b)}
+});
+/* music box (generated, no files) */
+var ctx=null,on=false,loopT=null;
+var F={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:466.16,C5:523.25};
+var tune=[['C4',.75],['C4',.25],['D4',1],['C4',1],['F4',1],['E4',2],['C4',.75],['C4',.25],['D4',1],['C4',1],['G4',1],['F4',2],['C4',.75],['C4',.25],['C5',1],['A4',1],['F4',1],['E4',1],['D4',1],['B4',.75],['B4',.25],['A4',1],['F4',1],['G4',1],['F4',2]];
+function note(f,t,d,v){
+  [1,2].forEach(function(m){
+    var o=ctx.createOscillator(),g=ctx.createGain();
+    o.type=m==1?'triangle':'sine';o.frequency.value=f*m;
+    var vol=(m==1?.16:.04)*v;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.01);g.gain.exponentialRampToValueAtTime(.0005,t+d+.9);
+    o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+d+1);
+  });
+}
+function play(){
+  if(!on)return;
+  var t=ctx.currentTime+.1,beat=.52,total=0;
+  tune.forEach(function(n){note(F[n[0]],t+total*beat,n[1]*beat,1);total+=n[1]}); 
+  loopT=setTimeout(play,(total*beat+2.5)*1000);
+}
+function setMusic(v){
+  try{
+    if(v&&!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)()}
+    if(v&&ctx.state==='suspended')ctx.resume();
+    on=v;$('music').textContent=v?'🎵':'🔇';
+    clearTimeout(loopT);if(v)play();
+  }catch(e){}
+}
+$('music').addEventListener('click',function(){setMusic(!on)});
+/* confetti */
+function confetti(n){
+  var c=['#f9c9da','#cfc3f5','#c7ecdd','#fde7b0','#f4b6cc'];
+  for(var i=0;i<n;i++){var d=document.createElement('div');d.className='dot';d.style.left=Math.random()*100+'vw';d.style.background=c[i%5];
+    d.style.animationDuration=(2.4+Math.random()*2.4)+'s';d.style.animationDelay=Math.random()*.7+'s';
+    if(i%3==0)d.style.borderRadius='50%';document.body.appendChild(d);setTimeout(function(x){x.remove()},6500,d)}
+}
+function swap(a,b,cb){a.classList.add('hidden');setTimeout(function(){b.classList.remove('hidden');b.classList.add('show');cb&&cb()},550)}
+function tick(){
+  var box=$('count'),diff=target-new Date();
+  box.innerHTML='';
+  if(diff<=0){$('clabel').textContent='Today is the day';return}
+  var d=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4),s=Math.floor(diff%6e4/1e3);
+  [[d,'Days'],[h,'Hours'],[m,'Mins'],[s,'Secs']].forEach(function(p){
+    var e=document.createElement('div'),b=document.createElement('b'),sp=document.createElement('span');
+    b.textContent=p[0];sp.textContent=p[1];e.appendChild(b);e.appendChild(sp);box.appendChild(e)});
+}
+function go(){
+  var n=$('name').value.trim();
+  if(!n){$('err').textContent='Please enter your name first.';$('name').focus();return}
+  guest=n;$('err').textContent='';$('guest').textContent=n;
+  $('music').style.display='block';setMusic(true);
+  $('env').classList.add('open');
+  setTimeout(function(){swap($('s1'),$('s2'),function(){confetti(60);tick();timer=setInterval(tick,1000)})},1100);
+}
+$('open').addEventListener('click',go);
+$('name').addEventListener('keydown',function(e){if(e.key==='Enter')go()});
+/* RSVP ticket */
+function rsvp(yes){
+  var code='NH-',ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  for(var i=0;i<5;i++)code+=ch[Math.floor(Math.random()*ch.length)];
+  var now=new Date();
+  $('tg').textContent=guest;$('tcode').textContent=code;
+  $('tdt').textContent=now.toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})+', '+now.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+  $('tst').textContent=yes?'Attending ✓':'Not attending';
+  $('tsec').textContent='🤫 Official Secret Keeper';
+  $('tt').textContent=yes?'See you there!':'We will miss you';
+  $('ts').textContent=yes?'Your spot is saved.':'Thank you for letting us know.';
+  swap($('s2'),$('s3'),function(){if(yes)confetti(80)});
+}
+$('pledge').addEventListener('click',function(){
+  var b=$('pledge');b.textContent='🤐 Secret sealed';b.classList.add('sealed');b.disabled=true;
+  $('yes').disabled=false;$('no').disabled=false;confetti(24);
+});
+$('yes').addEventListener('click',function(){rsvp(true)});
+$('no').addEventListener('click',function(){rsvp(false)});
+/* gentle tilt */
+var tl=$('tilt');
+document.addEventListener('pointermove',function(e){
+  if($('s2').classList.contains('hidden'))return;
+  var x=(e.clientX/innerWidth-.5)*6,y=(e.clientY/innerHeight-.5)*-6;
+  tl.style.transform='perspective(900px) rotateY('+x+'deg) rotateX('+y+'deg)';
+});
+</script>
+</body>
+</html>
